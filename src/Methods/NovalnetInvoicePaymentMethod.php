@@ -22,6 +22,7 @@ use Novalnet\Helper\PaymentHelper;
 use Novalnet\Services\PaymentService;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Plugin\Log\Loggable;
 
 /**
  * Class NovalnetPaymentMethod
@@ -30,6 +31,7 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
  */
 class NovalnetInvoicePaymentMethod extends PaymentMethodService
 {
+   use Loggable;
     /**
      * @var ConfigRepository
      */
@@ -159,6 +161,7 @@ class NovalnetInvoicePaymentMethod extends PaymentMethodService
     {
 	if($orderId > 0) {
 		$tid_status = $this->paymentHelper->getNovalnetTxStatus($orderId);
+		$this->getLogger(__METHOD__)->error('tid_status', $tid_status);
 		if(!empty($tid_status) && !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100])) {
 			return true;
 		}

@@ -193,6 +193,7 @@ class PaymentController extends Controller
         // Handles Guarantee and Normal Payment
         else if( in_array( $requestData['paymentKey'], $guarantee_payments ) ) 
         {   
+            $this->getLogger(__METHOD__)->error('enter guarantee', $guarantee_payments);
             // Mandatory Params For Novalnet SEPA
             if ( $requestData['paymentKey'] == 'NOVALNET_SEPA' ) {
                     $serverRequestData['data']['bank_account_holder'] = $requestData['nn_sepa_cardholder'];
@@ -203,6 +204,7 @@ class PaymentController extends Controller
             
             if('guarantee' == $guranteeStatus)
             {    
+                $this->getLogger(__METHOD__)->error('enter guarantee status', $guranteeStatus);
                 $birthday = sprintf('%4d-%02d-%02d',$requestData['nn_guarantee_year'],$requestData['nn_guarantee_month'],$requestData['nn_guarantee_date']);
                 $birthday = !empty($dob)? $dob :  $birthday;
                 

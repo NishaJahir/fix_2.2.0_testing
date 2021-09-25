@@ -725,6 +725,14 @@ class PaymentService
              {
                  $addressValidation = true;
              }
+            
+             $this->getLogger(__METHOD__)->error('amount', $amount);
+            $this->getLogger(__METHOD__)->error('min amount', $minimumAmount);
+            $this->getLogger(__METHOD__)->error('currency', $basket->currency);
+            $this->getLogger(__METHOD__)->error('add1', $billingAddress);
+            $this->getLogger(__METHOD__)->error('add2', $shippingAddress);
+            $this->getLogger(__METHOD__)->error('code', $customerBillingIsoCode);
+            
             // Check guarantee payment
             if ((((int) $amount >= (int) $minimumAmount && in_array(
                 $customerBillingIsoCode,

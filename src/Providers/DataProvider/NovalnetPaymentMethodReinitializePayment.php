@@ -66,9 +66,9 @@ class NovalnetPaymentMethodReinitializePayment
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
       // Form the payment request data 
        $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount);
-       $sessionStorage->getPlugin()->setValue('nnOrderNo',$order['id']);
-       $sessionStorage->getPlugin()->setValue('mop',$mopId);
-       $sessionStorage->getPlugin()->setValue('paymentKey',$paymentKey);
+       $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
+       $sessionStorage->getPlugin()->setValue('mop', $mopId);
+       $sessionStorage->getPlugin()->setValue('paymentKey', $paymentKey);
        
        // Set the request param for redirection payments
       if ($paymentService->isRedirectPayment($paymentKey, false)) {
@@ -82,7 +82,7 @@ class NovalnetPaymentMethodReinitializePayment
          $ccCustomFields = $paymentService->getCcFormFields();
       }
        
-       // If the Novalnet payments are rejected do the reinitialize payment
+       // If the Novalnet payments are rejected, do the reinitialize payment
        if( !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100]) ) {
           return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePayment', [
             'order' => $order, 

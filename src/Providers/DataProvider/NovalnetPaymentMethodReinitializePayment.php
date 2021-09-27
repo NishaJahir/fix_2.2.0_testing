@@ -80,7 +80,7 @@ class NovalnetPaymentMethodReinitializePayment
       }
        
       if ($paymentKey == 'NOVALNET_CC') {
-         $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey);
+         $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
          $ccCustomFields = $paymentService->getCcFormFields();
       }
        

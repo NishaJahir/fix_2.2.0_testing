@@ -22,6 +22,7 @@ use Plenty\Plugin\ConfigRepository;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
+use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 
 class NovalnetPaymentMethodReinitializePayment
 {
@@ -68,9 +69,7 @@ class NovalnetPaymentMethodReinitializePayment
       }
     }                         
       
-    // Set guarantee status
-    $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
-    $show_birthday = empty($address->companyName) && empty($birthday) ? $guarantee_status : '';
+    
     
       $paymentHelper->logger('order', $order);
       // Changed payment method key
@@ -93,6 +92,10 @@ class NovalnetPaymentMethodReinitializePayment
       } else { // Set the request param for direct payments
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }
+    
+    // Set guarantee status
+    $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
+    $show_birthday = empty($address->companyName) && empty($birthday) ? $guarantee_status : '';
        
       if ($paymentKey == 'NOVALNET_CC') {
          $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);

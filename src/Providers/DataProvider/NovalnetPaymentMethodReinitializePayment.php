@@ -36,7 +36,7 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
-    
+   
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
         if($property['typeId'] == 3)
@@ -57,6 +57,21 @@ class NovalnetPaymentMethodReinitializePayment
           }
         }
     }
+    
+    // Get company and birthday values
+    $basket = $basketRepository->load();            
+    $billingAddressId = $basket->customerInvoiceAddressId;
+    $address = $addressRepository->findAddressById($billingAddressId);
+    foreach ($address->options as $option) {
+      if ($option->typeId == 9) {
+          $birthday = $option->value;
+      }
+    }                         
+      
+    // Set guarantee status
+    $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
+    $show_birthday = empty($address->companyName) && empty($birthday) ? $guarantee_status : '';
+    
       $paymentHelper->logger('order', $order);
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
@@ -99,7 +114,7 @@ class NovalnetPaymentMethodReinitializePayment
             'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
-            'nnGuaranteeStatus' => $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount),
+            'nnGuaranteeStatus' => $show_birthday,
             'orderAmount' => $orderAmount
           ]);
        } else {

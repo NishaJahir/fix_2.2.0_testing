@@ -57,9 +57,10 @@ class NovalnetPaymentMethodReinitializePayment
           }
         }
     }
-      $paymentHelper->logger('order', );
+      $paymentHelper->logger('order', $order);
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
+     $paymentHelper->logger('key', $paymentKey);
        $name = trim($config->get('Novalnet.' . strtolower($paymentKey) . '_payment_name'));
        $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
       // Get the orderamount from order object if the basket amount is empty

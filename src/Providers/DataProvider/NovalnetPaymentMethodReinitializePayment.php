@@ -115,6 +115,7 @@ class NovalnetPaymentMethodReinitializePayment
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
             'nnGuaranteeStatus' => $show_birthday,
+            'isGuarantee' => $guarantee_status,
             'orderAmount' => $orderAmount
           ]);
        } else {

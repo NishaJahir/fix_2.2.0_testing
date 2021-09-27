@@ -20,7 +20,7 @@
 {% endif %}
 
 {% if 'NOVALNET' in paymentKey %}
-  {% if services.template.isCurrentTemplate('tpl.confirmation') %}
+  {% if services.template.isCurrentTemplate('tpl.my-account') or services.template.isCurrentTemplate('tpl.confirmation') %}
     <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit" style="display:{{ display }};">
       <strong class="col-xs-6 col-sm-5"></strong>
       <span class="col-xs-6 col-sm-7">

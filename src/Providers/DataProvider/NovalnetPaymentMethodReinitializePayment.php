@@ -57,7 +57,7 @@ class NovalnetPaymentMethodReinitializePayment
           }
         }
     }
-      
+      $paymentHelper->logger('order', );
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
        $name = trim($config->get('Novalnet.' . strtolower($paymentKey) . '_payment_name'));
@@ -73,6 +73,7 @@ class NovalnetPaymentMethodReinitializePayment
        // Set the request param for redirection payments
       if ($paymentService->isRedirectPayment($paymentKey, false)) {
          $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+         $sessionStorage->getPlugin()->setValue('nnPaymentUrl', $serverRequestData['url']);
       } else { // Set the request param for direct payments
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }

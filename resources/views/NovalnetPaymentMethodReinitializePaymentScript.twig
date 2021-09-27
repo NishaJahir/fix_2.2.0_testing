@@ -1,13 +1,13 @@
 <input type="hidden" name="nn_mop_id" id="nn_mop_id" value="{{paymentMethodIds}}">
 
 <script type="text/javascript">
-      jQuery(function () {
-      jQuery('#redirect-payment-process').click(function() {
-        window.location.href = jQuery('#nn_redirect_url').val();
+      $(function () {
+      $('#redirect-payment-process').click(function() {
+        window.location.href = $('#nn_redirect_url').val();
       });
   
-      jQuery('#form-payment-process').click(function() {
-        jQuery('#novalnetPaymentForm').show();
+      $('#form-payment-process').click(function() {
+        $('#novalnetPaymentForm').show();
       });
   
     });

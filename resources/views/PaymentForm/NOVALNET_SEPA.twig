@@ -1,6 +1,4 @@
 
-<link rel="stylesheet" href="{{plugin_path('Novalnet')}}/css/novalnet_ui.css">
-<script src="{{ plugin_path('Novalnet') }}/js/novalnet_sepa.js"></script>
 <form method="post" id="novalnet_form" name="novalnet_form" action="{{nnPaymentProcessUrl}}">
     
     <div class="modal-header">
@@ -42,7 +40,7 @@
                             </div>
                         </div> 
         {% if nnGuaranteeStatus == "guarantee" %}
-        <script defer src="{{plugin_path('Novalnet')}}/js/novalnet_guarantee_payment.js"></script>
+        
         <br><div class="row">
         <div class="col-sm-12"><b><label for="nn_birthday">{{trans("Novalnet::PaymentMethod.birthdate_label")}}<span class="text-danger">*</span></label></b></div>
                             <div class="col-sm-4">

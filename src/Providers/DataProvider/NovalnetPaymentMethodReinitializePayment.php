@@ -22,6 +22,7 @@ use Plenty\Plugin\ConfigRepository;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
+use Plenty\Modules\Account\Address\Models\Address;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 
 class NovalnetPaymentMethodReinitializePayment
@@ -38,7 +39,9 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
-   
+    
+    
+    $paymentHelper->logger('address', $basketRepository->load());
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
         if($property['typeId'] == 3)
@@ -61,10 +64,10 @@ class NovalnetPaymentMethodReinitializePayment
     }
     
     
-      $paymentHelper->logger('order', $order);
+      
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
-     $paymentHelper->logger('key', $paymentKey);
+    
        $name = trim($config->get('Novalnet.' . strtolower($paymentKey) . '_payment_name'));
        $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
       // Get the orderamount from order object if the basket amount is empty

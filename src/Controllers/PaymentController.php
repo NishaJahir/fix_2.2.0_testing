@@ -277,8 +277,9 @@ class PaymentController extends Controller
         $requestData = $this->request->all();
         $this->getLogger(__METHOD__)->error('post', $requestData);
         $paymentKey = $this->sessionStorage->getPlugin()->getValue('paymentKey');
+        $isGuarantee = $this->sessionStorage->getPlugin()->getValue('nnProcessb2bGuarantee');
         if (in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT', 'NOVALNET_CASHPAYMENT'])) {
-            $this->paymentService->paymentCalltoNovalnetServer();
+            $this->paymentService->paymentCalltoNovalnetServer($isGuarantee);
             $this->paymentService->validateResponse();
         }
     }

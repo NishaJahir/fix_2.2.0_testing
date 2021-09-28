@@ -285,7 +285,7 @@ class CallbackController extends Controller
         
             if ($this->aryCaptureParams['payment_type'] == 'TRANSACTION_CANCELLATION')
             {
-                $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo);
+                $transactionStatus = $this->payment_details($nnTransactionHistory->orderNo, $this->aryCaptureParams['tid']);
                 $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_transaction_cancellation',$orderLanguage),date('d.m.Y'), date('H:i:s'));
                 $this->paymentHelper->updatePayments($this->aryCaptureParams['tid'], $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
                 $this->sendCallbackMail($callbackComments);

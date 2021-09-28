@@ -7,7 +7,7 @@
       });
   
       $('#form-payment-process').click(function() {
-        $('#novalnetPaymentForm').show();
+        $('#novalnetPaymentForm' + {{order.id}}).show();
       });
   
     });

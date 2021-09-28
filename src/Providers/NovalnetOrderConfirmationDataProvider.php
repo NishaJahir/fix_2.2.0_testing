@@ -79,7 +79,6 @@ class NovalnetOrderConfirmationDataProvider
                 {
                     if ($payment->method['paymentKey'] == 'NOVALNET_CASHPAYMENT')
                     {
-                         $paymentHelper->logger('tid st1' , $tid_status);
                         $barzhlentoken = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_token'));
                         $barzahlenurl = html_entity_decode((string)$sessionStorage->getPlugin()->getValue('novalnet_checkout_url'));
                     }
@@ -95,12 +94,14 @@ class NovalnetOrderConfirmationDataProvider
                     
                     // Display error message in the confirmation page
                     $statusMessage = $sessionStorage->getPlugin()->getValue('novalnet_status_message');
+                    if (in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100])) {
+                         $paymentHelper->logger('tid strrrrrrrrrrr' , $tid_status);
+                        $sessionStorage->getPlugin()->setValue('novalnet_status_message', null);
+                        $statusMessage = '';
+                    }
+                    
                     if(!empty($statusMessage)) {
                         $comments .= PHP_EOL . $statusMessage;
-                    }
-                    if (in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100])) {
-                         $paymentHelper->logger('tid st' , $tid_status);
-                        $sessionStorage->getPlugin()->setValue('novalnet_status_message', null);
                     }
 
                     

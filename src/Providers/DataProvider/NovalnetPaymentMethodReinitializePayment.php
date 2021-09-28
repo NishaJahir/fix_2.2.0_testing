@@ -60,17 +60,6 @@ class NovalnetPaymentMethodReinitializePayment
         }
     }
     
-    // Get company and birthday values
-    $basket = $basketRepository->load();            
-    $billingAddressId = $basket->customerInvoiceAddressId;
-    $address = $addressRepository->findAddressById($billingAddressId);
-    foreach ($address->options as $option) {
-      if ($option->typeId == 9) {
-          $birthday = $option->value;
-      }
-    }                         
-      
-    
     
       $paymentHelper->logger('order', $order);
       // Changed payment method key
@@ -94,11 +83,25 @@ class NovalnetPaymentMethodReinitializePayment
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }
     
+    // Get company and birthday values
+    $basket = $basketRepository->load();            
+    $billingAddressId = $basket->customerInvoiceAddressId;
+    $address = $addressRepository->findAddressById($billingAddressId);
+    foreach ($address->options as $option) {
+      if ($option->typeId == 9) {
+          $birthday = $option->value;
+      }
+    }  
+    
     // Set guarantee status
     $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
     $show_birthday = (empty($address->companyName) && empty($birthday)) ? $guarantee_status : '';
-    $paymentHelper->logger('guarantee status', $guarantee_status);
-            $paymentHelper->logger('birthday status', $show_birthday);
+   
+    if ($guarantee_status == 'guarantee' && $show_birthday == '') {
+      $sessionStorage->getPlugin()->setValue('nnProcessb2bGuarantee', $guarantee_status);
+    }
+    
+    
       if ($paymentKey == 'NOVALNET_CC') {
          $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
          $ccCustomFields = $paymentService->getCcFormFields();

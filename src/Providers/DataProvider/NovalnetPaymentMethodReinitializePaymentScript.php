@@ -21,7 +21,7 @@ use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 
 class NovalnetPaymentMethodReinitializePaymentScript
 {
-  public function call(Twig $twig):string
+  public function call(Twig $twig, $arg):string
   {
     // Load the all Novalnet payment methods
     $paymentMethodRepository = pluginApp(PaymentMethodRepositoryContract::class);
@@ -36,6 +36,6 @@ class NovalnetPaymentMethodReinitializePaymentScript
         }
     }
     
-    return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePaymentScript', ['paymentMethodIds' => $paymentMethodIds]);
+    return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePaymentScript', ['paymentMethodIds' => $paymentMethodIds, 'order' => $arg[0]]);
   }
 }

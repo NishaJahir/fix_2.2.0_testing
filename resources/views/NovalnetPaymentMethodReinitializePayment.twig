@@ -37,7 +37,7 @@
         <button class="payment-confirmation-btn btn btn-primary btn-block" id="direct-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </button>
         {% endif %}
   {% elseif services.template.isCurrentTemplate('tpl.confirmation') %}
-    <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit">
+    <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit" >
       <strong class="col-xs-6 col-sm-5"></strong>
       <span class="col-xs-6 col-sm-7">
         <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">
@@ -64,5 +64,57 @@
 </div>
 
 {% endif %}
+
+
+<input type="hidden" name="nn_mop_id" id="nn_mop_id" value="{{paymentMethodIds}}">
+<input type="hidden" name="nn_order_id" id="nn_order_id" value="{{order.id}}">
+<button>Reinitiate</button>
+<script type="text/javascript">
+      $(function () {
+      $('.nn_novalnetPaymentForm').hide();
+      
+      
+      $("[id^='form-payment-process-']").click(function () {
+      var orderId = $(this).attr('id').split('-')[1];
+      console.log(orderId);
+      
+      });
+      
+      $('#redirect-payment-process').click(function() {
+        window.location.href = $('#nn_redirect_url').val();
+      });
+  
+      $('#form-payment-process').click(function() {
+        $('#novalnetPaymentForm').show();
+      });
+  
+    });
+
+  $(function () {
+    $("#direct-payment-process").click(function () {
+      $.get("/payment/novalnet/changePaymentMethod/", function(data)
+      {
+        window.location = data;
+      });
+    });
+  });
+ 
+  var paymentMethodIds = jQuery('#nn_mop_id').val();
+  document.addEventListener('historyPaymentMethodChanged', e => {
+    for(let property in e.detail.newOrder.order.properties){
+      if(e.detail.newOrder.order.properties[property].typeId === 3){
+       for(let paymentMethodId in paymentMethodIds) {
+       if (e.detail.newOrder.order.properties[property].value ==  paymentMethodIds[paymentMethodId]) {
+          console.log(e.detail.oldOrder.id);
+          document.getElementById("nnReinitPaymentMethod-" + e.detail.oldOrder.id).style.display = "block";
+        } else {
+            console.log(e.detail.oldOrder.id);
+          document.getElementById("nnReinitPaymentMethod-" + e.detail.oldOrder.id).style.display = "none";
+        }
+       }
+      }
+    }
+  });
+</script>
 
 

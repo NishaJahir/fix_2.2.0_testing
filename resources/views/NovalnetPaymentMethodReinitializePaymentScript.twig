@@ -6,7 +6,7 @@
         window.location.href = $('#nn_redirect_url').val();
       });
   
-      $('#form-payment-process').click(function() {
+      $('#form-payment-process' + {{order.id}}).click(function() {
         $('#novalnetPaymentForm' + {{order.id}}).show();
       });
   

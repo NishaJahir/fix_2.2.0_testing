@@ -26,7 +26,7 @@
         <input type="hidden" name="nn_redirect_url" id="nn_redirect_url" value="{{redirectUrl}}">
         <button class="payment-confirmation-btn btn btn-primary btn-block" id="redirect-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </button>
         {% elseif paymentKey in ['NOVALNET_SEPA', 'NOVALNET_CC'] or nnGuaranteeStatus == 'guarantee' %}
-         <button class="payment-confirmation-btn btn btn-primary btn-block"  id="form-payment-process" data-toggle="modal" data-target="#novalnetPaymentForm-{{order.id}}"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </button>
+         <button class="payment-confirmation-btn btn btn-primary btn-block"  id="form-payment-process-{{order.id}}" data-toggle="modal" data-target="#novalnetPaymentForm-{{order.id}}"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </button>
         {% elseif  paymentKey in ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT', 'NOVALNET_CASHPAYMENT']%}
         <button class="payment-confirmation-btn btn btn-primary btn-block" id="direct-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </button>
         {% endif %}

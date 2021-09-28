@@ -18,6 +18,7 @@ namespace Novalnet\Providers\DataProvider;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Method\Models\PaymentMethod;
+use Novalnet\Helper\PaymentHelper;
 
 class NovalnetPaymentMethodReinitializePaymentScript
 {
@@ -25,6 +26,14 @@ class NovalnetPaymentMethodReinitializePaymentScript
   {
     // Load the all Novalnet payment methods
     $paymentMethodRepository = pluginApp(PaymentMethodRepositoryContract::class);
+    $paymentHelper = pluginApp(PaymentHelper::class);
+    $order = $arg[0];
+   foreach($order['properties'] as $property) {
+        if($property['typeId'] == 3)
+        {
+            $mopId = $property['value'];
+        }
+    }
     $paymentMethods          = $paymentMethodRepository->allForPlugin('plenty_novalnet');
     if(!is_null($paymentMethods))
     {
@@ -35,7 +44,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
           }
         }
     }
-    
-    return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePaymentScript', ['paymentMethodIds' => $paymentMethodIds, 'order' => $arg[0]]);
+    $paymentHelper->logger('mop', $mopId);
+    return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePaymentScript', ['paymentMethodIds' => $paymentMethodIds, 'order' => $arg[0], 'paymentMethodId' => $mopId]);
   }
 }

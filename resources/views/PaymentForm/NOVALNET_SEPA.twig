@@ -1,5 +1,7 @@
-<script src="{{ plugin_path('Novalnet') }}/js/novalnet_sepa.js" defer></script>
+<div tabindex="-1" role="dialog" id="novalnetPaymentForm-250" class="modal">
 
+<script src="{{ plugin_path('Novalnet') }}/js/novalnet_sepa.js" defer></script>
+<link rel="stylesheet" href="{{plugin_path('Novalnet')}}/css/novalnet_ui.css">
 
 
 <form method="post" id="novalnet_form" name="novalnet_form" action="{{nnPaymentProcessUrl}}">  
@@ -73,3 +75,4 @@
         </button>
     </div>
 </form>
+</div>

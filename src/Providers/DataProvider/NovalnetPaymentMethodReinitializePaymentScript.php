@@ -79,7 +79,8 @@ class NovalnetPaymentMethodReinitializePaymentScript
       $paymentHelper->logger('tid status provider', $tid_status);
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
-    
+   $paymentHelper->logger('tid status mopid', $mopId);
+     $paymentHelper->logger('tid status mop', $paymentKey);
        $name = trim($config->get('Novalnet.' . strtolower($paymentKey) . '_payment_name'));
        $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
       // Get the orderamount from order object if the basket amount is empty

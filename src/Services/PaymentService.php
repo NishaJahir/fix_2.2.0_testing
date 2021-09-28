@@ -167,6 +167,8 @@ class PaymentService
         $this->sessionStorage->getPlugin()->setValue('novalnet_checkout_url', $this->getBarzhalenTestMode($nnPaymentData['test_mode']));        
         }
         
+         $this->getLogger(__METHOD__)->error('mop', $nnPaymentData);
+        
         $additional_info = $this->additionalInfo($nnPaymentData);
 
         $transactionData = [

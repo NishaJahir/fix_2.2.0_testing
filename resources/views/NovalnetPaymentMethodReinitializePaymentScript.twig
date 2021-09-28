@@ -20,12 +20,40 @@
   {% set display = "none" %}
 {% endif %}
 
-<div style="display:{{display}};">
-<button>Reinitiate</button>
+<input type="hidden" name="display" value="{{display}}">
+<input type="hidden" name="paymentKey" value="{{paymentKey}}">
+
+
+{% if 'NOVALNET' in paymentKey %}
+  {% if services.template.isCurrentTemplate('tpl.confirmation') %}
+    <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit" style="display:{{display}};">
+      <strong class="col-xs-6 col-sm-5"></strong>
+      <span class="col-xs-6 col-sm-7">
+        <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">
+        {% if isRedirectPayment == true %}
+        <input type="hidden" name="nn_redirect_url" id="nn_redirect_url" value="{{redirectUrl}}">
+        <a class="payment-confirmation-btn btn btn-primary" id="redirect-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </a>
+        {% elseif paymentKey in ['NOVALNET_SEPA', 'NOVALNET_CC'] or nnGuaranteeStatus == 'guarantee' %}
+         <a class="payment-confirmation-btn btn btn-primary" @click="" id="form-payment-process" data-toggle="modal" data-target="#novalnetPaymentForm-{{order.id}}"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </a>
+        {% elseif  paymentKey in ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT', 'NOVALNET_CASHPAYMENT'] %}
+        <a class="payment-confirmation-btn btn btn-primary" id="direct-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </a>
+        {% endif %}
+      </span>
+    </div>
+  {% endif %}
+  
+<div tabindex="-1" role="dialog" id="novalnetPaymentForm-{{order.id}}" class="nn_novalnetPaymentForm">
+    {% if paymentKey == 'NOVALNET_INVOICE' and nnGuaranteeStatus == 'guarantee' %}
+    {% include "Novalnet::PaymentForm.NOVALNET_INVOICE" %}
+    {% elseif paymentKey == 'NOVALNET_SEPA' %}
+    {% include "Novalnet::PaymentForm.NOVALNET_SEPA" %}
+    {% elseif paymentKey == 'NOVALNET_CC' %}
+    {% include "Novalnet::PaymentForm.NOVALNET_CC" %}
+    {% endif %}
 </div>
 
-<button>TEST</button>
-<input type="hidden" name="display" value="{{display}}">
+{% endif %}
+
 <script type="text/javascript">
       $(function () {
       $('.nn_novalnetPaymentForm').hide();

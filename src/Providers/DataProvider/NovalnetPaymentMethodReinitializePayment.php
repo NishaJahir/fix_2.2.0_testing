@@ -96,8 +96,9 @@ class NovalnetPaymentMethodReinitializePayment
     
     // Set guarantee status
     $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
-    $show_birthday = empty($address->companyName) && empty($birthday) ? $guarantee_status : '';
-       
+    $show_birthday = (empty($address->companyName) && empty($birthday)) ? $guarantee_status : '';
+    $paymentHelper->logger('guarantee status', $guarantee_status);
+            $paymentHelper->logger('birthday status', $show_birthday);
       if ($paymentKey == 'NOVALNET_CC') {
          $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
          $ccCustomFields = $paymentService->getCcFormFields();

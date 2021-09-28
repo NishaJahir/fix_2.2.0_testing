@@ -4,13 +4,22 @@
 <script type="text/javascript">
       $(function () {
       $('.nn_novalnetPaymentForm').hide();
+      alert({{order.id}});
+      
+      
+      
+      $("[id^='form-payment-process-']").click(function () {
+      var orderId = $(this).attr('id').split('-')[1];
+      console.log(orderId);
+      
+      });
       
       $('#redirect-payment-process').click(function() {
         window.location.href = $('#nn_redirect_url').val();
       });
   
-      $('#form-payment-process-' + {{order.id}}).click(function() {
-        $('#novalnetPaymentForm-' + {{order.id}}).show();
+      $('#form-payment-process').click(function() {
+        $('#novalnetPaymentForm').show();
       });
   
     });

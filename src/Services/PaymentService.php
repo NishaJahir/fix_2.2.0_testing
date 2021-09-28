@@ -943,6 +943,11 @@ class PaymentService
           
         $serverRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
         $serverRequestData['data']['order_no'] = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
+        $guaranteePayment = $this->sessionStorage->getPlugin()->getValue('nnProceedGuarantee');
+        if($guaranteePayment == 'guarantee') {
+            $serverRequestData['data']['payment_type'] = 'GUARANTEED_DIRECT_DEBIT_SEPA';
+            $serverRequestData['data']['key']          = '40';
+        }
         $response = $this->paymentHelper->executeCurl($serverRequestData['data'], $serverRequestData['url']);
         $responseData = $this->paymentHelper->convertStringToArray($response['response'], '&');
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($responseData);

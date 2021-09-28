@@ -30,6 +30,6 @@ class NovalnetPaymentMethodReinitializePayment
   
   public function call(Twig $twig, $arg):string
   {
-    
+     return '';
   }
 }

@@ -76,7 +76,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
     }
     
     
-      
+      $paymentHelper->logger('tid status provider', $tid_status);
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
     
@@ -97,7 +97,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
       } else { // Set the request param for direct payments
           $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
       }
-    
+    $paymentHelper->logger('b load', $basketRepository->load());
     // Get company and birthday values
     $basket = $basketRepository->load();            
     $billingAddressId = $basket->customerInvoiceAddressId;
@@ -107,7 +107,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
           $birthday = $option->value;
       }
     }  
-    
+    $paymentHelper->logger('b load 123', $address);
     // Set guarantee status
     $guarantee_status = $paymentService->getGuaranteeStatus($basketRepository->load(), $paymentKey, $orderAmount);
     $show_birthday = (empty($address->companyName) && empty($birthday)) ? $guarantee_status : '';
@@ -121,7 +121,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
          $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
          $ccCustomFields = $paymentService->getCcFormFields();
       }
-       
+       $paymentHelper->logger('b load key', $paymentKey);
        // If the Novalnet payments are rejected, do the reinitialize payment
        if( !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100]) ) {
         $paymentHelper->logger('tid status if', $tid_status);

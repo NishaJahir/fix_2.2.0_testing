@@ -144,7 +144,7 @@ class PaymentController extends Controller
         $paymentRequestData = !empty($sessionPaymentRequestData) ? array_merge($sessionPaymentRequestData, $responseData) : $responseData;
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', $paymentRequestData);
         $this->paymentService->validateResponse();
-       
+        $this->getLogger(__METHOD__)->error('here redirect', $responseData);
         return $this->response->redirectTo('confirmation');
     }
 
@@ -263,7 +263,8 @@ class PaymentController extends Controller
                                                                'formData'     => $paymentRequestData,
                                                                 'nnPaymentUrl' => $paymentUrl
                                    ]);
-        } else {            
+        } else {    
+             $this->getLogger(__METHOD__)->error('here redirect 2222222', $paymentRequestData);
             return $this->response->redirectTo('confirmation');
           }
     }

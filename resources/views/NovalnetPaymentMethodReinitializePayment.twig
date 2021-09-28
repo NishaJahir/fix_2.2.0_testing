@@ -20,7 +20,7 @@
 {% endif %}
 
 
-{% if 'NOVALNET' in paymentKey %}
+
   {% if services.template.isCurrentTemplate('tpl.my-account') %}
         <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">
         {% if isRedirectPayment == true %}
@@ -58,6 +58,6 @@
     {% endif %}
 </div>
 
-{% endif %}
+
 
 

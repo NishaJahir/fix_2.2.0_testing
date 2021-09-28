@@ -50,7 +50,7 @@
     </div>
   {% endif %}
   
-<div tabindex="-1" role="dialog" id="novalnetPaymentForm-{{order.id}}">
+<div tabindex="-1" role="dialog" id="novalnetPaymentForm-{{order.id}}" class="nn_novalnetPaymentForm">
     {% if paymentKey == 'NOVALNET_INVOICE' and nnGuaranteeStatus == 'guarantee' %}
     {% include "Novalnet::PaymentForm.NOVALNET_INVOICE" %}
     {% elseif paymentKey == 'NOVALNET_SEPA' %}

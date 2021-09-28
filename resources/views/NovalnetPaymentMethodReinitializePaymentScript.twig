@@ -1,8 +1,9 @@
 <input type="hidden" name="nn_mop_id" id="nn_mop_id" value="{{paymentMethodIds}}">
+<input type="hidden" name="nn_order_id" id="nn_order_id" value="{{order.id}}">
 
 <script type="text/javascript">
       $(function () {
-      $('#novalnetPaymentForm-' + {{order.id}}).hide();
+      $('.nn_novalnetPaymentForm').hide();
       
       $('#redirect-payment-process').click(function() {
         window.location.href = $('#nn_redirect_url').val();

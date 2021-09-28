@@ -163,11 +163,11 @@ class PaymentService
         
         if($nnPaymentData['payment_id'] == '59' && !empty($nnPaymentData['cp_checkout_token']) && $nnPaymentData['tid_status'] == '100')
         {
+                 $this->getLogger(__METHOD__)->error('tid st2' , $nnPaymentData['tid_status']);
         $this->sessionStorage->getPlugin()->setValue('novalnet_checkout_token', $nnPaymentData['cp_checkout_token']);
         $this->sessionStorage->getPlugin()->setValue('novalnet_checkout_url', $this->getBarzhalenTestMode($nnPaymentData['test_mode']));        
         }
-        
-         $this->getLogger(__METHOD__)->error('mop', $nnPaymentData);
+       
         
         $additional_info = $this->additionalInfo($nnPaymentData);
 

@@ -124,6 +124,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
        
        // If the Novalnet payments are rejected, do the reinitialize payment
        if( !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100]) ) {
+        $paymentHelper->logger('tid status if', $tid_status);
           return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePaymentScript', [
             'order' => $order, 
             'paymentMethodId' => $mopId,
@@ -143,6 +144,7 @@ class NovalnetPaymentMethodReinitializePaymentScript
             'paymentMethodIds' => $paymentMethodIds
           ]);
        } else {
+          $paymentHelper->logger('tid status else', $tid_status);
           return '';
       }
   }

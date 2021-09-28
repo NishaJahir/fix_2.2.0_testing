@@ -36,12 +36,13 @@ class NovalnetPaymentMethodReinitializePayment
     $config = pluginApp(ConfigRepository::class);
     $basketRepository = pluginApp(BasketRepositoryContract::class);
     $addressRepository = pluginApp(AddressRepositoryContract::class);
+    $address = pluginApp(Address::class);
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
     
     
-    $paymentHelper->logger('address', $basketRepository->load());
+    $paymentHelper->logger('address details', $address);
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
         if($property['typeId'] == 3)

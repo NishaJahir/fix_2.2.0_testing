@@ -52,6 +52,7 @@ class TransactionService
             $transaction->additionalInfo      = !empty($transactionData['additional_info']) ? $transactionData['additional_info'] : '0';
             
             $database->save($transaction);
+             $this->getLogger(__METHOD__)->error('entry insert', $transaction);
         } catch (\Exception $e) {
             $this->getLogger(__METHOD__)->error('Callback table insert failed!.', $e);
         }

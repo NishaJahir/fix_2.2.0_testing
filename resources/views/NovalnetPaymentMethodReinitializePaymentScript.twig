@@ -24,7 +24,7 @@
 <input type="hidden" name="paymentKey" value="{{paymentKey}}">
 
 
-{% if 'NOVALNET' in paymentKey %}
+
   {% if services.template.isCurrentTemplate('tpl.confirmation') %}
     <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit" style="display:{{display}};">
       <strong class="col-xs-6 col-sm-5"></strong>
@@ -52,7 +52,7 @@
     {% endif %}
 </div>
 
-{% endif %}
+
 
 <script type="text/javascript">
       $(function () {

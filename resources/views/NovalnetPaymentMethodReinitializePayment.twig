@@ -19,6 +19,12 @@
   {% set display = "none" %}
 {% endif %}
 
+ <input type="hidden" name="paymentKey" id="paymentKey" value="{{paymentKey}}">
+ <input type="hidden" name="display" id="display" value="{{display}}">
+ <input type="hidden" name="paymentId" id="paymentId" value="{{paymentId}}">
+ <input type="hidden" name="paidStatus" id="paidStatus" value="{{paidStatus}}">
+  <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">
+
 {% if 'NOVALNET' in paymentKey %}
   {% if services.template.isCurrentTemplate('tpl.my-account') %}
         <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">

@@ -2,12 +2,14 @@
 
 <script type="text/javascript">
       $(function () {
+      $('#novalnetPaymentForm-' + {{order.id}}).hide();
+      
       $('#redirect-payment-process').click(function() {
         window.location.href = $('#nn_redirect_url').val();
       });
   
-      $('#form-payment-process' + {{order.id}}).click(function() {
-        $('#novalnetPaymentForm' + {{order.id}}).show();
+      $('#form-payment-process-' + {{order.id}}).click(function() {
+        $('#novalnetPaymentForm-' + {{order.id}}).show();
       });
   
     });

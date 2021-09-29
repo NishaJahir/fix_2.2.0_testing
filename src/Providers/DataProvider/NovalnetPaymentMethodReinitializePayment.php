@@ -113,6 +113,8 @@ class NovalnetPaymentMethodReinitializePayment
             'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
             'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
             'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
+            'billingInvoiceAddrId' => $order['billingAddress']['id'],
+            'shippingInvoiceAddrId' => $order['deliveryAddress']['id']
             
           ]);
        } else {

@@ -18,6 +18,8 @@
                 <input type="hidden" id="nn_dob_invalid" name="nn_dob_invalid" value="{{trans("Novalnet::PaymentMethod.dobInvalid")}}">
                 <input type="hidden" id="nn_dob_month" name="nn_dob_month" value="{{trans("Novalnet::PaymentMethod.monthOption")}}">
                 <input type="hidden" name="nn_invoice_valid_dob_msg" id="nn_invoice_valid_dob_msg" value="{{trans("Novalnet::PaymentMethod.doberror")}}">
+                <input type="hidden" id="billingInvoiceAddrId" name="billingInvoiceAddrId" value="{{billingInvoiceAddrId}}" />
+                <input type="hidden" id="shippingInvoiceAddrId" name="shippingInvoiceAddrId" value="{{shippingInvoiceAddrId}}" />
                 {% if reinit is not empty %}
                 <input type="hidden" id="nn_reinit" name="nn_reinit" value="{{reinit}}">
                 <input type="hidden" id="nn_orderamount" name="nn_orderamount" value="{{orderAmount}}">

@@ -70,6 +70,7 @@ class NovalnetPaymentMethodReinitializePayment
       // Get the orderamount from order object if the basket amount is empty
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
     
+     $serverRequestData = [];
       if (!empty($basket->customerInvoiceAddressId)) {
         $paymentHelper->logger('basket id there', $basket);
         // Form the payment request data 

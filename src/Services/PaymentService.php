@@ -267,7 +267,8 @@ class PaymentService
      */
     public function getRequestParameters(Basket $basket, $paymentKey = '', $doRedirect = false, $orderAmount = 0)
     {
-        
+      
+        $this->getLogger(__METHOD__)->error('basket', $basket);
      /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
         $vatService = pluginApp(\Plenty\Modules\Frontend\Services\VatService::class);
 
@@ -280,12 +281,13 @@ class PaymentService
         
         $billingAddressId = $basket->customerInvoiceAddressId;
         $address = $this->addressRepository->findAddressById($billingAddressId);
-    $shippingAddress = $address;
+        $shippingAddress = $address;
         if(!empty($basket->customerShippingAddressId)){
             $shippingAddress = $this->addressRepository->findAddressById($basket->customerShippingAddressId);
         }
-        
-    $customerName = $this->getCustomerName($address);
+        $this->getLogger(__METHOD__)->error('bill id', $billingAddressId);
+         $this->getLogger(__METHOD__)->error('addr', $address);
+        $customerName = $this->getCustomerName($address);
     
         $account = pluginApp(AccountService::class);
         $customerId = $account->getAccountContactId();

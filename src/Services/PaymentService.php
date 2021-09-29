@@ -283,12 +283,14 @@ class PaymentService
         
         
         $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
+        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
         $address = $this->addressRepository->findAddressById($billingAddressId);
         $shippingAddress = $address;
-        if(!empty($basket->customerShippingAddressId) || !empty($shippingInvoiceAddrId) ){
-            $shippingAddress = $this->addressRepository->findAddressById($basket->customerShippingAddressId);
+        if( !empty($shippingAddressId) ) {
+            $shippingAddress = $this->addressRepository->findAddressById($shippingAddressId);
         }
         $this->getLogger(__METHOD__)->error('bill id', $billingAddressId);
+             $this->getLogger(__METHOD__)->error('ship id', $shippingAddressId);
          $this->getLogger(__METHOD__)->error('addr', $address);
         $customerName = $this->getCustomerName($address);
     

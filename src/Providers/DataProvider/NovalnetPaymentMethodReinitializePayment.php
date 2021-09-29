@@ -65,6 +65,28 @@ class NovalnetPaymentMethodReinitializePayment
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
     
+    $name = trim($config->get('Novalnet.' . strtolower($paymentKey) . '_payment_name'));
+       $paymentName = ($name ? $name : $paymentHelper->getTranslatedText(strtolower($paymentKey)));
+      // Get the orderamount from order object if the basket amount is empty
+       $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
+      // Form the payment request data 
+       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount);
+       $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
+       $sessionStorage->getPlugin()->setValue('mop', $mopId);
+       $sessionStorage->getPlugin()->setValue('paymentKey', $paymentKey);
+       
+       // Set the request param for redirection payments
+      if ($paymentService->isRedirectPayment($paymentKey, false)) {
+         $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+         $sessionStorage->getPlugin()->setValue('nnPaymentUrl', $serverRequestData['url']);
+      } else { // Set the request param for direct payments
+          $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
+      }
+    
+     if ($paymentKey == 'NOVALNET_CC') {
+         $ccFormDetails = $paymentService->getCreditCardAuthenticationCallData($basketRepository->load(), $paymentKey, $orderAmount);
+         $ccCustomFields = $paymentService->getCcFormFields();
+      }
        
        // If the Novalnet payments are rejected, do the reinitialize payment
        if( !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100]) ) {
@@ -73,6 +95,15 @@ class NovalnetPaymentMethodReinitializePayment
             'order' => $order, 
             'paymentMethodId' => $mopId,
             'paymentKey' => $paymentKey,
+            'isRedirectPayment' => $paymentService->isRedirectPayment($paymentKey, false),
+            'redirectUrl' => $paymentService->getRedirectPaymentUrl(),
+            'reinit' => 1,
+            'nnPaymentProcessUrl' => $paymentService->getProcessPaymentUrl(),
+            'paymentMopKey'     =>  $paymentKey,
+            'paymentName' => $paymentName,
+            'ccFormDetails'  => !empty($ccFormDetails) ? $ccFormDetails : '',
+            'ccCustomFields' => !empty($ccCustomFields) ? $ccCustomFields : '',
+            'endcustomername'=> $serverRequestData['data']['first_name'] . ' ' . $serverRequestData['data']['last_name'],
             
           ]);
        } else {

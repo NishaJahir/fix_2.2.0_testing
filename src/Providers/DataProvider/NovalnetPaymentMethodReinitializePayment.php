@@ -39,7 +39,6 @@ class NovalnetPaymentMethodReinitializePayment
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
     
     
-    $paymentHelper->logger('address details', $address);
     // Get payment method Id and status
     foreach($order['properties'] as $property) {
         if($property['typeId'] == 3)

@@ -38,6 +38,7 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
     $payments = $paymentRepository->getPaymentsByOrderId($order['id']);
+    $basket = $basketRepository->load();
     
     
     // Get payment method Id and status
@@ -60,13 +61,7 @@ class NovalnetPaymentMethodReinitializePayment
           }
         }
     }
-    
-     $paymentHelper->logger('order obj', $order);
-     $paymentHelper->logger('bill obj', $order['billingAddress']->id);
-    $paymentHelper->logger('bill array', $order['billingAddress']['id']);
-    
-
-      
+  
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
     
@@ -75,8 +70,14 @@ class NovalnetPaymentMethodReinitializePayment
       // Get the orderamount from order object if the basket amount is empty
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
     
-      // Form the payment request data 
-       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
+      if (!empty($basket->customerInvoiceAddressId)) {
+        $paymentHelper->logger('basket id there', $basket);
+        // Form the payment request data 
+       $serverRequestData = $paymentService->getRequestParameters($basket, $paymentKey, false, $orderAmount, $order['billingAddress']['id'], $order['deliveryAddress']['id']);
+      } else {
+        $paymentHelper->logger('basket id empty', $basket);
+      }
+      
     
        $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
        $sessionStorage->getPlugin()->setValue('mop', $mopId);

@@ -19,7 +19,7 @@
   {% set display = "none" %}
 {% endif %}
 
-
+<input type="hidden" name="display_nn" value="{{display}}">
 
   {% if services.template.isCurrentTemplate('tpl.my-account') %}
         <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">
@@ -32,7 +32,7 @@
         <button class="payment-confirmation-btn btn btn-primary btn-block" id="direct-payment-process"> {{trans("Novalnet::PaymentMethod.novalnet_reinit_payment")}} </button>
         {% endif %}
   {% elseif services.template.isCurrentTemplate('tpl.confirmation') %}
-    <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit" >
+    <div id="nnReinitPaymentMethod-{{order.id}}" class="row con-reinit" style="display:{{display}};">
       <strong class="col-xs-6 col-sm-5"></strong>
       <span class="col-xs-6 col-sm-7">
         <input type="hidden" name="paymentMethodId" id="paymentMethodId" value="{{paymentMethodId}}">

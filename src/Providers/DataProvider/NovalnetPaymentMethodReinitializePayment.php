@@ -22,7 +22,7 @@ use Plenty\Plugin\ConfigRepository;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
-use Plenty\Modules\Frontend\Contracts\Checkout;
+
 
 
 class NovalnetPaymentMethodReinitializePayment
@@ -34,7 +34,6 @@ class NovalnetPaymentMethodReinitializePayment
     $paymentHelper = pluginApp(PaymentHelper::class);
     $paymentService = pluginApp(PaymentService::class);
     $config = pluginApp(ConfigRepository::class);
-     $checkout = pluginApp(Checkout::class);
     $basketRepository = pluginApp(BasketRepositoryContract::class);
     $paymentRepository = pluginApp(PaymentRepositoryContract::class);
     $sessionStorage = pluginApp(FrontendSessionStorageFactoryContract::class);
@@ -61,11 +60,12 @@ class NovalnetPaymentMethodReinitializePayment
           }
         }
     }
-    $invoice_id = $checkout->getCustomerInvoiceAddressId();
     
      $paymentHelper->logger('order obj', $order);
+     $paymentHelper->logger('bill obj', $order['billingAddress']->id);
+    $paymentHelper->logger('bill array', $order['billingAddress']['id']);
     
-     $paymentHelper->logger('invoice Id', $invoice_id);
+
       
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
@@ -75,7 +75,7 @@ class NovalnetPaymentMethodReinitializePayment
       // Get the orderamount from order object if the basket amount is empty
        $orderAmount = $paymentHelper->ConvertAmountToSmallerUnit($order['amounts'][0]['invoiceTotal']);
       // Form the payment request data 
-       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount);
+       $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey, false, $orderAmount, $billingInvoiceId);
        $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
        $sessionStorage->getPlugin()->setValue('mop', $mopId);
        $sessionStorage->getPlugin()->setValue('paymentKey', $paymentKey);

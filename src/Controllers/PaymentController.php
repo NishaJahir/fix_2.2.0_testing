@@ -157,7 +157,8 @@ class PaymentController extends Controller
         $requestData = $this->request->all();
         $notificationMessage = $this->paymentHelper->getNovalnetStatusText($requestData);
         $basket = $this->basketRepository->load();  
-        $billingAddressId = $basket->customerInvoiceAddressId;
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $requestData['billingInvoiceAddrId'];
+        $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $requestData['shippingInvoiceAddrId'];
         $address = $this->addressRepository->findAddressById($billingAddressId);
         foreach ($address->options as $option) {
             if ($option->typeId == 9) {
@@ -169,7 +170,7 @@ class PaymentController extends Controller
         if($requestData['paymentKey'] == 'NOVALNET_CC' && !empty($requestData['nn_cc3d_redirect']) ) {
               $doRedirect = true;
         }
-        $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey'], $doRedirect);
+        $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey'], $doRedirect, 0, $billingAddressId, $shippingAddressId);
         
         if (empty($serverRequestData['data']['first_name']) && empty($serverRequestData['data']['last_name'])) {
         $notificationMessage = $this->paymentHelper->getTranslatedText('nn_first_last_name_error');

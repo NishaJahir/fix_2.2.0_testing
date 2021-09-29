@@ -262,10 +262,12 @@ class PaymentService
      * @param PaymentKey $paymentKey
      * @param bool $doRedirect
      * @param int $orderAmount
+     * @param int $billingInvoiceAddrId
+     * @param int $shippingInvoiceAddrId
      *
      * @return array
      */
-    public function getRequestParameters(Basket $basket, $paymentKey = '', $doRedirect = false, $orderAmount = 0)
+    public function getRequestParameters(Basket $basket, $paymentKey = '', $doRedirect = false, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
       
         $this->getLogger(__METHOD__)->error('basket', $basket);
@@ -279,10 +281,11 @@ class PaymentService
             $basket->basketAmount = $basket->basketAmountNet;
         }
         
-        $billingAddressId = $basket->customerInvoiceAddressId;
+        
+        $billingAddressId = !empty($basket->customerInvoiceAddressId) ? $basket->customerInvoiceAddressId : $billingInvoiceAddrId;
         $address = $this->addressRepository->findAddressById($billingAddressId);
         $shippingAddress = $address;
-        if(!empty($basket->customerShippingAddressId)){
+        if(!empty($basket->customerShippingAddressId) || !empty($shippingInvoiceAddrId) ){
             $shippingAddress = $this->addressRepository->findAddressById($basket->customerShippingAddressId);
         }
         $this->getLogger(__METHOD__)->error('bill id', $billingAddressId);

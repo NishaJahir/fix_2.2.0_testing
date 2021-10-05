@@ -267,6 +267,7 @@ class PaymentHelper
      */
     public function assignPlentyPaymentToPlentyOrder(Payment $payment, int $orderId)
     {
+        $this->getLogger(__METHOD__)->error('assign payment', $orderId);
         try {
         /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
         $authHelper = pluginApp(AuthHelper::class);
@@ -276,6 +277,7 @@ class PaymentHelper
                 $order = $this->orderRepository->findOrderById($orderId);
                 if (! is_null($order) && $order instanceof Order)
                 {
+                    $this->getLogger(__METHOD__)->error('assign payment order', $order);
                     $this->paymentOrderRelationRepository->createOrderRelation($payment, $order);
                 }
             }

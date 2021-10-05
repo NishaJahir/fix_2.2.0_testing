@@ -663,6 +663,7 @@ class PaymentHelper
         $paymentProperty[]   = $this->getPaymentProperty(PaymentProperty::TYPE_EXTERNAL_TRANSACTION_STATUS, $paymentData['tid_status']);
         $payment->properties = $paymentProperty;
         $paymentObj = $this->paymentRepository->createPayment($payment);
+        $this->getLogger(__METHOD__)->error('refund creation', $paymentData);
         $this->assignPlentyPaymentToPlentyOrder($paymentObj, (int)$paymentData['child_order_id']);
     }
     

@@ -105,13 +105,13 @@ class NovalnetServiceProvider extends ServiceProvider
     {
 
         // Register the Novalnet payment methods in the payment method container
-        $payContainer->register('plenty_novalnet::NOVALNET_CC', NovalnetCcPaymentMethod::class,
+        $payContainer->register('plenty_novalnet::NOVALNET_SEPA', NovalnetSepaPaymentMethod::class,
             [
                 AfterBasketChanged::class,
                 AfterBasketItemAdd::class,
                 AfterBasketCreate::class
             ]);
-        $payContainer->register('plenty_novalnet::NOVALNET_SEPA', NovalnetSepaPaymentMethod::class,
+        $payContainer->register('plenty_novalnet::NOVALNET_CC', NovalnetCcPaymentMethod::class,
             [
                 AfterBasketChanged::class,
                 AfterBasketItemAdd::class,
